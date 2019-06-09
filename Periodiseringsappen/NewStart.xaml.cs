@@ -34,19 +34,28 @@ namespace Periodiseringsappen
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            bigSum.Value = Decimal.Parse(txtBigSum.Text);
-            leftSum.Value = bigSum.Value;
-            AccountEvent ev = new AccountEvent();
-            events.Add(ev);
-            events.Remove(ev);
+            try
+            {
+                bigSum.Value = Decimal.Parse(txtBigSum.Text);
+                leftSum.Value = bigSum.Value;
+                AccountEvent ev = new AccountEvent();
+                events.Add(ev);
+                events.Remove(ev);
 
-            FileOperations.Serialize(bigSum, fileNameBig);
-            FileOperations.Serialize(leftSum, fileNameLeft);
-            FileOperations.Serialize(events, fileNameEvents);
+                FileOperations.Serialize(bigSum, fileNameBig);
+                FileOperations.Serialize(leftSum, fileNameLeft);
+                FileOperations.Serialize(events, fileNameEvents);
 
-            MainWindow mw = new MainWindow();
-            mw.Show();
-            this.Close();
+                MainWindow mw = new MainWindow();
+                mw.Show();
+                this.Close();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Du måste ange ett värde.");
+            }
+
+            
         }
     }
 }

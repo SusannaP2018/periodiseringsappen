@@ -73,16 +73,33 @@ namespace Periodiseringsappen
             AccountEvent ev = new AccountEvent();
             DateTime? d = dateP.SelectedDate;
 
-            ev.EventName = "Periodisering";
-            ev.When = d;
-            ev.Value = Decimal.Parse(txtSubtract.Text);
-            events.Add(ev);
+            if (d == null)
+            {
+                MessageBox.Show("Du måste välja ett datum.");
+            }
+            else
+            {
+                ev.EventName = "Periodisering";
+                ev.When = d;
 
+                try
+                {
+                    ev.Value = Decimal.Parse(txtSubtract.Text);
+                    events.Add(ev);
+                
+                    leftSum.Value = leftSum.Value - Decimal.Parse(txtSubtract.Text);
+                    txtLeftSum.Text = leftSum.Value.ToString();
+                    lviewEvents.ItemsSource = null;
+                    lviewEvents.ItemsSource = events;
 
-            leftSum.Value = leftSum.Value - Decimal.Parse(txtSubtract.Text);
-            txtLeftSum.Text = leftSum.Value.ToString();
-            lviewEvents.ItemsSource = null;
-            lviewEvents.ItemsSource = events;
+                    txtSubtract.Text = null;
+                    dateP.SelectedDate = null;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Du måste ange ett värde.");
+            }
+            }
         }
     }
 }
