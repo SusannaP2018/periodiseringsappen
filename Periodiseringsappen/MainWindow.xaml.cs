@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Periodiseringsappen // new app
+namespace Periodiseringsappen // new app 
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
