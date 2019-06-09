@@ -20,7 +20,12 @@ namespace Periodiseringsappen
     public partial class NewStart : Window
     {
         Amount bigSum = new Amount();
-        const string fileName = "amounts.bin";
+        Amount leftSum = new Amount();
+        List<AccountEvent> events = new List<AccountEvent>();
+
+        const string fileNameBig = "big.bin";
+        const string fileNameLeft = "left.bin";
+        const string fileNameEvents = "events.bin";
 
         public NewStart()
         {
@@ -30,7 +35,14 @@ namespace Periodiseringsappen
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             bigSum.Value = Decimal.Parse(txtBigSum.Text);
-            FileOperations.Serialize(bigSum, fileName);
+            leftSum.Value = bigSum.Value;
+            AccountEvent ev = new AccountEvent();
+            events.Add(ev);
+            events.Remove(ev);
+
+            FileOperations.Serialize(bigSum, fileNameBig);
+            FileOperations.Serialize(leftSum, fileNameLeft);
+            FileOperations.Serialize(events, fileNameEvents);
 
             MainWindow mw = new MainWindow();
             mw.Show();

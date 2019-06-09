@@ -22,15 +22,21 @@ namespace Periodiseringsappen
     public partial class MainWindow : Window
     {
         Amount bigSum = new Amount();
+        Amount leftSum = new Amount();
+        List<AccountEvent> events = new List<AccountEvent>();
 
-        const string fileName = "amounts.bin";
+        const string fileNameBig = "big.bin";
+        const string fileNameLeft = "left.bin";
+        const string fileNameEvents = "events.bin";
         public MainWindow()
         {
             InitializeComponent();
 
-            if (File.Exists(fileName)) // Reads the file, if there is one.
+            if (File.Exists(fileNameBig) && File.Exists(fileNameEvents) && File.Exists(fileNameLeft))
             {
-                bigSum = (Amount)FileOperations.Deserialize(fileName);
+                bigSum = (Amount)FileOperations.Deserialize(fileNameBig);
+                leftSum = (Amount)FileOperations.Deserialize(fileNameLeft);
+                events = (List<AccountEvent>)FileOperations.Deserialize(fileNameEvents);
             }
             else
             {
@@ -39,14 +45,19 @@ namespace Periodiseringsappen
                 this.Close();
             }
 
-            txtTotalSum.Text = bigSum.Value.ToString();
+            txtBigSum.Text = bigSum.Value.ToString();
+            txtLeftSum.Text = leftSum.Value.ToString();
+            lviewEvents.ItemsSource = events;
             
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            bigSum.Value = Decimal.Parse(txtTotalSum.Text);
-            FileOperations.Serialize(bigSum, fileName);
+            bigSum.Value = Decimal.Parse(txtBigSum.Text);
+            leftSum.Value = Decimal.Parse(txtLeftSum.Text);
+            FileOperations.Serialize(bigSum, fileNameBig);
+            FileOperations.Serialize(leftSum, fileNameLeft);
+            FileOperations.Serialize(events, fileNameEvents);
             this.Close();
         }
 
@@ -55,6 +66,23 @@ namespace Periodiseringsappen
             NewStart ns = new NewStart();
             ns.Show();
             this.Close();
+        }
+
+        private void btnPeriodize_Click(object sender, RoutedEventArgs e)
+        {
+            AccountEvent ev = new AccountEvent();
+            DateTime? d = dateP.SelectedDate;
+
+            ev.EventName = "Periodisering";
+            ev.When = d;
+            ev.Value = Decimal.Parse(txtSubtract.Text);
+            events.Add(ev);
+
+
+            leftSum.Value = leftSum.Value - Decimal.Parse(txtSubtract.Text);
+            txtLeftSum.Text = leftSum.Value.ToString();
+            lviewEvents.ItemsSource = null;
+            lviewEvents.ItemsSource = events;
         }
     }
 }
