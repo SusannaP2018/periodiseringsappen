@@ -21,21 +21,24 @@ namespace Periodiseringsappen
     /// </summary>
     public partial class MainWindow : Window
     {
-        Amount bigSum = new Amount();
-        Amount leftSum = new Amount();
+        //Amount bigSum = new Amount();
+        //Amount leftSum = new Amount();
+        StoredValues values = new StoredValues();
         List<AccountEvent> events = new List<AccountEvent>();
 
-        const string fileNameBig = "big.bin";
-        const string fileNameLeft = "left.bin";
+        //const string fileNameBig = "big.bin";
+        //const string fileNameLeft = "left.bin";
+        const string fileNameValues = "values.bin";
         const string fileNameEvents = "events.bin";
         public MainWindow()
         {
             InitializeComponent();
 
-            if (File.Exists(fileNameBig) && File.Exists(fileNameEvents) && File.Exists(fileNameLeft))
+            if (File.Exists(fileNameValues) && File.Exists(fileNameEvents))
             {
-                bigSum = (Amount)FileOperations.Deserialize(fileNameBig);
-                leftSum = (Amount)FileOperations.Deserialize(fileNameLeft);
+                //bigSum = (Amount)FileOperations.Deserialize(fileNameBig);
+                //leftSum = (Amount)FileOperations.Deserialize(fileNameLeft);
+                values = (StoredValues)FileOperations.Deserialize(fileNameValues);
                 events = (List<AccountEvent>)FileOperations.Deserialize(fileNameEvents);
             }
             else
@@ -45,18 +48,19 @@ namespace Periodiseringsappen
                 this.Close();
             }
 
-            txtBigSum.Text = bigSum.Value.ToString();
-            txtLeftSum.Text = leftSum.Value.ToString();
+            txtBigSum.Text = values.BigSum.ToString();
+            txtLeftSum.Text = values.RemainingSum.ToString();
             lviewEvents.ItemsSource = events;
             
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            bigSum.Value = Decimal.Parse(txtBigSum.Text);
-            leftSum.Value = Decimal.Parse(txtLeftSum.Text);
-            FileOperations.Serialize(bigSum, fileNameBig);
-            FileOperations.Serialize(leftSum, fileNameLeft);
+            values.BigSum = Decimal.Parse(txtBigSum.Text);
+            values.RemainingSum = Decimal.Parse(txtLeftSum.Text);
+            //FileOperations.Serialize(bigSum, fileNameBig);
+            //FileOperations.Serialize(leftSum, fileNameLeft);
+            FileOperations.Serialize(values, fileNameValues);
             FileOperations.Serialize(events, fileNameEvents);
             this.Close();
         }
@@ -87,8 +91,8 @@ namespace Periodiseringsappen
                     ev.Value = Decimal.Parse(txtSubtract.Text);
                     events.Add(ev);
                 
-                    leftSum.Value = leftSum.Value - Decimal.Parse(txtSubtract.Text);
-                    txtLeftSum.Text = leftSum.Value.ToString();
+                    values.RemainingSum = values.RemainingSum - Decimal.Parse(txtSubtract.Text);
+                    txtLeftSum.Text = values.RemainingSum.ToString();
                     lviewEvents.ItemsSource = null;
                     lviewEvents.ItemsSource = events;
 

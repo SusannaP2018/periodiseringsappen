@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 namespace Periodiseringsappen
 {
     [Serializable]
-    class Amount
+    class StoredValues
     {
-        public decimal Value { get; set; }
+        public decimal BigSum { get; set; }
+        public decimal RemainingSum { get; set; }
     }
 }
