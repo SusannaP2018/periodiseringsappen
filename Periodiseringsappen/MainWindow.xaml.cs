@@ -21,13 +21,9 @@ namespace Periodiseringsappen
     /// </summary>
     public partial class MainWindow : Window
     {
-        //Amount bigSum = new Amount();
-        //Amount leftSum = new Amount();
         StoredValues values = new StoredValues();
         List<AccountEvent> events = new List<AccountEvent>();
 
-        //const string fileNameBig = "big.bin";
-        //const string fileNameLeft = "left.bin";
         const string fileNameValues = "values.bin";
         const string fileNameEvents = "events.bin";
         public MainWindow()
@@ -36,8 +32,6 @@ namespace Periodiseringsappen
 
             if (File.Exists(fileNameValues) && File.Exists(fileNameEvents))
             {
-                //bigSum = (Amount)FileOperations.Deserialize(fileNameBig);
-                //leftSum = (Amount)FileOperations.Deserialize(fileNameLeft);
                 values = (StoredValues)FileOperations.Deserialize(fileNameValues);
                 events = (List<AccountEvent>)FileOperations.Deserialize(fileNameEvents);
             }
@@ -58,8 +52,6 @@ namespace Periodiseringsappen
         {
             values.BigSum = Decimal.Parse(txtBigSum.Text);
             values.RemainingSum = Decimal.Parse(txtLeftSum.Text);
-            //FileOperations.Serialize(bigSum, fileNameBig);
-            //FileOperations.Serialize(leftSum, fileNameLeft);
             FileOperations.Serialize(values, fileNameValues);
             FileOperations.Serialize(events, fileNameEvents);
             this.Close();

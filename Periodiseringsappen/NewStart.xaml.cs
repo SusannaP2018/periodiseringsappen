@@ -19,13 +19,9 @@ namespace Periodiseringsappen
     /// </summary>
     public partial class NewStart : Window
     {
-        //Amount bigSum = new Amount();
-        //Amount leftSum = new Amount();
         StoredValues values = new StoredValues();
         List<AccountEvent> events = new List<AccountEvent>();
-
-        //const string fileNameBig = "big.bin";
-        //const string fileNameLeft = "left.bin";
+        
         const string fileNameValues = "values.bin";
         const string fileNameEvents = "events.bin";
 
@@ -43,9 +39,7 @@ namespace Periodiseringsappen
                 AccountEvent ev = new AccountEvent();
                 events.Add(ev);
                 events.Remove(ev);
-
-                //FileOperations.Serialize(bigSum, fileNameBig);
-                //FileOperations.Serialize(leftSum, fileNameLeft);
+                
                 FileOperations.Serialize(values, fileNameValues);
                 FileOperations.Serialize(events, fileNameEvents);
 

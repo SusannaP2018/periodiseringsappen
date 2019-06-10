@@ -12,7 +12,7 @@ namespace Periodiseringsappen
         public string EventName { get; set; }
         public DateTime? When { get; set; }
         public decimal Value { get; set; }
-
+        public string FormattedDate { get; set; }
         
     }
 }
